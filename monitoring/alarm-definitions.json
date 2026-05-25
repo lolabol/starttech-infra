@@ -1,0 +1,64 @@
+{
+  "alarms": [
+    {
+      "name": "starttech-high-cpu",
+      "description": "Triggers when EC2 CPU exceeds 80%",
+      "metric": "CPUUtilization",
+      "namespace": "AWS/EC2",
+      "threshold": 80,
+      "comparison": "GreaterThanThreshold",
+      "period": 120,
+      "evaluation_periods": 2,
+      "statistic": "Average",
+      "action": "scale-up"
+    },
+    {
+      "name": "starttech-low-cpu",
+      "description": "Triggers when EC2 CPU drops below 20%",
+      "metric": "CPUUtilization",
+      "namespace": "AWS/EC2",
+      "threshold": 20,
+      "comparison": "LessThanThreshold",
+      "period": 120,
+      "evaluation_periods": 2,
+      "statistic": "Average",
+      "action": "scale-down"
+    },
+    {
+      "name": "starttech-high-response-time",
+      "description": "Triggers when ALB response time exceeds 2 seconds",
+      "metric": "TargetResponseTime",
+      "namespace": "AWS/ApplicationELB",
+      "threshold": 2,
+      "comparison": "GreaterThanThreshold",
+      "period": 60,
+      "evaluation_periods": 3,
+      "statistic": "Average",
+      "action": "notify"
+    },
+    {
+      "name": "starttech-unhealthy-hosts",
+      "description": "Triggers when ALB has unhealthy hosts",
+      "metric": "UnHealthyHostCount",
+      "namespace": "AWS/ApplicationELB",
+      "threshold": 1,
+      "comparison": "GreaterThanOrEqualToThreshold",
+      "period": 60,
+      "evaluation_periods": 2,
+      "statistic": "Average",
+      "action": "notify"
+    },
+    {
+      "name": "starttech-redis-high-cpu",
+      "description": "Triggers when Redis CPU exceeds 70%",
+      "metric": "CPUUtilization",
+      "namespace": "AWS/ElastiCache",
+      "threshold": 70,
+      "comparison": "GreaterThanThreshold",
+      "period": 120,
+      "evaluation_periods": 2,
+      "statistic": "Average",
+      "action": "notify"
+    }
+  ]
+}

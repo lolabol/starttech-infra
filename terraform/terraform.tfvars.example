@@ -1,0 +1,16 @@
+aws_region     = "us-east-1"
+aws_account_id = "625272706271"
+project_name   = "starttech"
+environment    = "production"
+
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.3.0/24", "10.0.4.0/24"]
+
+instance_type    = "t2.micro"
+key_pair_name    = "your-key-pair-name"
+mongodb_uri      = "mongodb+srv://username:password@cluster.mongodb.net/dbname"
+
+min_size         = 1
+max_size         = 3
+desired_capacity = 2

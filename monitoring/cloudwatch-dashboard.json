@@ -1,0 +1,59 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "properties": {
+        "title": "EC2 CPU Utilization",
+        "period": 300,
+        "stat": "Average",
+        "metrics": [
+          ["AWS/EC2", "CPUUtilization"]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "title": "ALB Request Count",
+        "period": 300,
+        "stat": "Sum",
+        "metrics": [
+          ["AWS/ApplicationELB", "RequestCount"]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "title": "ALB Target Response Time",
+        "period": 300,
+        "stat": "Average",
+        "metrics": [
+          ["AWS/ApplicationELB", "TargetResponseTime"]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "title": "ElastiCache CPU",
+        "period": 300,
+        "stat": "Average",
+        "metrics": [
+          ["AWS/ElastiCache", "CPUUtilization"]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "title": "ElastiCache Cache Hits",
+        "period": 300,
+        "stat": "Sum",
+        "metrics": [
+          ["AWS/ElastiCache", "CacheHits"]
+        ]
+      }
+    }
+  ]
+}

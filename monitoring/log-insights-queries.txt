@@ -1,0 +1,46 @@
+# CloudWatch Log Insights Queries for StartTech
+
+# 1. Get all error logs from backend
+fields @timestamp, @message
+| filter @message like /ERROR/
+| sort @timestamp desc
+| limit 50
+
+# 2. Count requests by status code
+fields @timestamp, @message
+| parse @message "status=*" as status
+| stats count(*) by status
+| sort count desc
+
+# 3. Get slow requests (response time > 1s)
+fields @timestamp, @message
+| parse @message "duration=*ms" as duration
+| filter duration > 1000
+| sort duration desc
+| limit 20
+
+# 4. Monitor application health checks
+fields @timestamp, @message
+| filter @message like /health/
+| sort @timestamp desc
+| limit 50
+
+# 5. Count errors by hour
+fields @timestamp, @message
+| filter @message like /ERROR/
+| stats count(*) by bin(1h)
+| sort @timestamp desc
+
+# 6. Get database connection errors
+fields @timestamp, @message
+| filter @message like /mongodb/
+| filter @message like /ERROR/
+| sort @timestamp desc
+| limit 20
+
+#7. Get Redis connection errors
+fields @timestamp, @message
+| filter @message like /redis/
+| filter @message like /ERROR/
+| sort @timestamp desc
+| limit 20
