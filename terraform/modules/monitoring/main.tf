@@ -66,6 +66,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         type = "metric"
         properties = {
           title  = "EC2 CPU Utilization"
+          region = "us-east-1"
           period = 300
           metrics = [
             ["AWS/EC2", "CPUUtilization"]
@@ -76,6 +77,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         type = "metric"
         properties = {
           title  = "ALB Request Count"
+          region = "us-east-1" 
           period = 300
           metrics = [
             ["AWS/ApplicationELB", "RequestCount"]
@@ -86,6 +88,7 @@ resource "aws_cloudwatch_dashboard" "main" {
         type = "metric"
         properties = {
           title  = "ElastiCache CPU"
+          region = "us-east-1"
           period = 300
           metrics = [
             ["AWS/ElastiCache", "CPUUtilization"]
