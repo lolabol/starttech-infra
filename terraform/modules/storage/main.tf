@@ -51,6 +51,7 @@ resource "aws_s3_bucket_policy" "frontend" {
   depends_on = [aws_s3_bucket_public_access_block.frontend]
 }
 
+/*
 # CloudFront Distribution
 resource "aws_cloudfront_distribution" "frontend" {
   origin {
@@ -64,6 +65,7 @@ resource "aws_cloudfront_distribution" "frontend" {
       origin_ssl_protocols = ["TLSv1.2"]
     }
   }
+
 
   enabled = true
   default_root_object = "index.html"
@@ -103,3 +105,4 @@ resource "aws_cloudfront_distribution" "frontend" {
     Environment = var.environment
   }
 }
+*/

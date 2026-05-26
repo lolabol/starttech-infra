@@ -13,10 +13,12 @@ output "s3_bucket_name" {
   value       = module.storage.s3_bucket_name
 }
 
+/*
 output "cloudfront_domain" {
   description = "CloudFront distribution domain"
   value       = module.storage.cloudfront_domain
 }
+*/
 
 output "ecr_repository_url" {
   description = "ECR repository URL"
