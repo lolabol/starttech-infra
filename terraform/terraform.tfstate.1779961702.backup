@@ -1,0 +1,95 @@
+{
+  "version": 4,
+  "terraform_version": "1.14.7",
+  "serial": 237,
+  "lineage": "ded97b50-d399-9c17-bba2-81490f1b3164",
+  "outputs": {
+    "alb_dns_name": {
+      "value": "starttech-alb-1255723045.us-east-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "ecr_repository_url": {
+      "value": "625272706271.dkr.ecr.us-east-1.amazonaws.com/starttech-backend",
+      "type": "string"
+    },
+    "redis_endpoint": {
+      "value": "starttech-redis.oviaor.0001.use1.cache.amazonaws.com",
+      "type": "string"
+    },
+    "s3_bucket_name": {
+      "value": "starttech-frontend-production-2026",
+      "type": "string"
+    },
+    "vpc_id": {
+      "value": "vpc-0bb92c4eb44c251b5",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": false,
+            "block_public_policy": false,
+            "bucket": "starttech-frontend-production-2026",
+            "id": "starttech-frontend-production-2026",
+            "ignore_public_acls": false,
+            "restrict_public_buckets": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.storage.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket_website_configuration",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket": "starttech-frontend-production-2026",
+            "error_document": [
+              {
+                "key": "index.html"
+              }
+            ],
+            "expected_bucket_owner": "",
+            "id": "starttech-frontend-production-2026",
+            "index_document": [
+              {
+                "suffix": "index.html"
+              }
+            ],
+            "redirect_all_requests_to": [],
+            "routing_rule": [],
+            "routing_rules": "",
+            "website_domain": "s3-website-us-east-1.amazonaws.com",
+            "website_endpoint": "starttech-frontend-production-2026.s3-website-us-east-1.amazonaws.com"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.storage.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

@@ -1,0 +1,1404 @@
+{
+  "version": 4,
+  "terraform_version": "1.14.7",
+  "serial": 210,
+  "lineage": "ded97b50-d399-9c17-bba2-81490f1b3164",
+  "outputs": {
+    "alb_dns_name": {
+      "value": "starttech-alb-1255723045.us-east-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "ecr_repository_url": {
+      "value": "625272706271.dkr.ecr.us-east-1.amazonaws.com/starttech-backend",
+      "type": "string"
+    },
+    "redis_endpoint": {
+      "value": "starttech-redis.oviaor.0001.use1.cache.amazonaws.com",
+      "type": "string"
+    },
+    "s3_bucket_name": {
+      "value": "starttech-frontend-production-2026",
+      "type": "string"
+    },
+    "vpc_id": {
+      "value": "vpc-0bb92c4eb44c251b5",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_elasticache_subnet_group",
+      "name": "redis",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticache:us-east-1:625272706271:subnetgroup:starttech-redis-subnet",
+            "description": "Managed by Terraform",
+            "id": "starttech-redis-subnet",
+            "name": "starttech-redis-subnet",
+            "subnet_ids": [
+              "subnet-05ce6e3682db9009d",
+              "subnet-0cff06a7c02297fdd"
+            ],
+            "tags": {},
+            "tags_all": {},
+            "vpc_id": "vpc-07211ee9b48b75f9d"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_iam_instance_profile",
+      "name": "ec2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::625272706271:instance-profile/starttech-ec2-profile",
+            "create_date": "2026-05-28T09:18:17Z",
+            "id": "starttech-ec2-profile",
+            "name": "starttech-ec2-profile",
+            "name_prefix": "",
+            "path": "/",
+            "role": "starttech-ec2-role",
+            "tags": {},
+            "tags_all": {},
+            "unique_id": "AIPAZDFJIKTPXP6XJKAZJ"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.compute.aws_iam_role.ec2"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "ec2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::625272706271:role/starttech-ec2-role",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-05-28T08:48:39Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "starttech-ec2-role",
+            "inline_policy": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+              "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+            ],
+            "max_session_duration": 3600,
+            "name": "starttech-ec2-role",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {},
+            "tags_all": {},
+            "unique_id": "AROAZDFJIKTPQZFYZ44PO"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "cloudwatch",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "starttech-ec2-role-20260528090849273100000002",
+            "policy_arn": "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy",
+            "role": "starttech-ec2-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.compute.aws_iam_role.ec2"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ecr",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "starttech-ec2-role-20260528090849268700000001",
+            "policy_arn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+            "role": "starttech-ec2-role"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.compute.aws_iam_role.ec2"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:loadbalancer/app/starttech-alb/237f9b27bd38fb85",
+            "arn_suffix": "app/starttech-alb/237f9b27bd38fb85",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "starttech-alb-1255723045.us-east-1.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:us-east-1:625272706271:loadbalancer/app/starttech-alb/237f9b27bd38fb85",
+            "idle_timeout": 60,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "starttech-alb",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-03790db9069648dfd"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-06b10d923d012f966"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0d38007dadbe15c90"
+              }
+            ],
+            "subnets": [
+              "subnet-05ce6e3682db9009d",
+              "subnet-0cff06a7c02297fdd"
+            ],
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-alb"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-alb"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-07211ee9b48b75f9d",
+            "xff_header_processing_mode": "append",
+            "zone_id": "Z35SXDOTRQ7X7K"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_security_group.alb",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:listener/app/starttech-alb/237f9b27bd38fb85/4acf95eecae9bf50",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [
+                  {
+                    "stickiness": [
+                      {
+                        "duration": 0,
+                        "enabled": false
+                      }
+                    ],
+                    "target_group": [
+                      {
+                        "arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:targetgroup/starttech-tg/16a6255bac18bf51",
+                        "weight": 1
+                      }
+                    ]
+                  }
+                ],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:targetgroup/starttech-tg/16a6255bac18bf51",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:625272706271:listener/app/starttech-alb/237f9b27bd38fb85/4acf95eecae9bf50",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:loadbalancer/app/starttech-alb/237f9b27bd38fb85",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": {},
+            "tags_all": {},
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIwIn0=",
+          "dependencies": [
+            "module.compute.aws_lb.backend",
+            "module.compute.aws_lb_target_group.backend",
+            "module.networking.aws_security_group.alb",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:us-east-1:625272706271:targetgroup/starttech-tg/16a6255bac18bf51",
+            "arn_suffix": "targetgroup/starttech-tg/16a6255bac18bf51",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200",
+                "path": "/health",
+                "port": "traffic-port",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 10
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:us-east-1:625272706271:targetgroup/starttech-tg/16a6255bac18bf51",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": null,
+            "load_balancer_arns": [
+              "arn:aws:elasticloadbalancing:us-east-1:625272706271:loadbalancer/app/starttech-alb/237f9b27bd38fb85"
+            ],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "starttech-tg",
+            "name_prefix": "",
+            "port": 8080,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": null,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-tg"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-tg"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-07211ee9b48b75f9d"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ==",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "ec2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:security-group/sg-037d9cd4b15c5b81e",
+            "description": "Security group for EC2 instances",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-037d9cd4b15c5b81e",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 22
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 8080,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-03790db9069648dfd"
+                ],
+                "self": false,
+                "to_port": 8080
+              }
+            ],
+            "name": "starttech-ec2-sg",
+            "name_prefix": "",
+            "owner_id": "625272706271",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-ec2-sg"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-ec2-sg"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.networking.aws_security_group.alb",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.compute",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "redis",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:security-group/sg-01c0c00417692e158",
+            "description": "Security group for Redis",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-01c0c00417692e158",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 6379,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-037d9cd4b15c5b81e"
+                ],
+                "self": false,
+                "to_port": 6379
+              }
+            ],
+            "name": "starttech-redis-sg",
+            "name_prefix": "",
+            "owner_id": "625272706271",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-redis-sg"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-redis-sg"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.compute.aws_security_group.ec2",
+            "module.networking.aws_security_group.alb",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_dashboard",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "dashboard_arn": "arn:aws:cloudwatch::625272706271:dashboard/starttech-dashboard",
+            "dashboard_body": "{\"widgets\":[{\"properties\":{\"metrics\":[[\"AWS/EC2\",\"CPUUtilization\"]],\"period\":300,\"region\":\"us-east-1\",\"title\":\"EC2 CPU Utilization\"},\"type\":\"metric\"},{\"properties\":{\"metrics\":[[\"AWS/ApplicationELB\",\"RequestCount\"]],\"period\":300,\"region\":\"us-east-1\",\"title\":\"ALB Request Count\"},\"type\":\"metric\"},{\"properties\":{\"metrics\":[[\"AWS/ElastiCache\",\"CPUUtilization\"]],\"period\":300,\"region\":\"us-east-1\",\"title\":\"ElastiCache CPU\"},\"type\":\"metric\"}]}",
+            "dashboard_name": "starttech-dashboard",
+            "id": "starttech-dashboard"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:logs:us-east-1:625272706271:log-group:/starttech/backend",
+            "id": "/starttech/backend",
+            "kms_key_id": "",
+            "log_group_class": "STANDARD",
+            "name": "/starttech/backend",
+            "name_prefix": "",
+            "retention_in_days": 30,
+            "skip_destroy": false,
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-backend-logs"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-backend-logs"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:logs:us-east-1:625272706271:log-group:/starttech/frontend",
+            "id": "/starttech/frontend",
+            "kms_key_id": "",
+            "log_group_class": "STANDARD",
+            "name": "/starttech/frontend",
+            "name_prefix": "",
+            "retention_in_days": 30,
+            "skip_destroy": false,
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-frontend-logs"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-frontend-logs"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjAifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "high_cpu",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "actions_enabled": true,
+            "alarm_actions": [],
+            "alarm_description": "This alarm triggers when CPU exceeds 80%",
+            "alarm_name": "starttech-high-cpu",
+            "arn": "arn:aws:cloudwatch:us-east-1:625272706271:alarm:starttech-high-cpu",
+            "comparison_operator": "GreaterThanThreshold",
+            "datapoints_to_alarm": 0,
+            "dimensions": {},
+            "evaluate_low_sample_count_percentiles": "",
+            "evaluation_periods": 2,
+            "extended_statistic": "",
+            "id": "starttech-high-cpu",
+            "insufficient_data_actions": [],
+            "metric_name": "CPUUtilization",
+            "metric_query": [],
+            "namespace": "AWS/EC2",
+            "ok_actions": [],
+            "period": 120,
+            "statistic": "Average",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-high-cpu-alarm"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-high-cpu-alarm"
+            },
+            "threshold": 80,
+            "threshold_metric_id": "",
+            "treat_missing_data": "missing",
+            "unit": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.monitoring",
+      "mode": "managed",
+      "type": "aws_cloudwatch_metric_alarm",
+      "name": "low_cpu",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "actions_enabled": true,
+            "alarm_actions": [],
+            "alarm_description": "This alarm triggers when CPU drops below 20%",
+            "alarm_name": "starttech-low-cpu",
+            "arn": "arn:aws:cloudwatch:us-east-1:625272706271:alarm:starttech-low-cpu",
+            "comparison_operator": "LessThanThreshold",
+            "datapoints_to_alarm": 0,
+            "dimensions": {},
+            "evaluate_low_sample_count_percentiles": "",
+            "evaluation_periods": 2,
+            "extended_statistic": "",
+            "id": "starttech-low-cpu",
+            "insufficient_data_actions": [],
+            "metric_name": "CPUUtilization",
+            "metric_query": [],
+            "namespace": "AWS/EC2",
+            "ok_actions": [],
+            "period": 120,
+            "statistic": "Average",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-low-cpu-alarm"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-low-cpu-alarm"
+            },
+            "threshold": 20,
+            "threshold_metric_id": "",
+            "treat_missing_data": "missing",
+            "unit": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:internet-gateway/igw-06fad9858bb27ac76",
+            "id": "igw-06fad9858bb27ac76",
+            "owner_id": "625272706271",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-igw"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-igw"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:route-table/rtb-0474295fe68c0cc18",
+            "id": "rtb-0474295fe68c0cc18",
+            "owner_id": "625272706271",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-06fad9858bb27ac76",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-public-rt"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-public-rt"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0225019dc17b8d2b5",
+            "route_table_id": "rtb-0474295fe68c0cc18",
+            "subnet_id": "subnet-0cff06a7c02297fdd",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_route_table.public",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-06977fbf67e89b52c",
+            "route_table_id": "rtb-0474295fe68c0cc18",
+            "subnet_id": "subnet-05ce6e3682db9009d",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.networking.aws_internet_gateway.main",
+            "module.networking.aws_route_table.public",
+            "module.networking.aws_subnet.public",
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:security-group/sg-03790db9069648dfd",
+            "description": "Security group for ALB",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-03790db9069648dfd",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "starttech-alb-sg",
+            "name_prefix": "",
+            "owner_id": "625272706271",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-alb-sg"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-alb-sg"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:subnet/subnet-00ddfa4cedd974eba",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1a",
+            "availability_zone_id": "use1-az1",
+            "cidr_block": "10.0.3.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-00ddfa4cedd974eba",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "625272706271",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-private-subnet-1"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-private-subnet-1"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:subnet/subnet-0cfb161aca60919b0",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1b",
+            "availability_zone_id": "use1-az2",
+            "cidr_block": "10.0.4.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0cfb161aca60919b0",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "625272706271",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-private-subnet-2"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-private-subnet-2"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:subnet/subnet-0cff06a7c02297fdd",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1a",
+            "availability_zone_id": "use1-az1",
+            "cidr_block": "10.0.1.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0cff06a7c02297fdd",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "625272706271",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-public-subnet-1"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-public-subnet-1"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:subnet/subnet-05ce6e3682db9009d",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-1b",
+            "availability_zone_id": "use1-az2",
+            "cidr_block": "10.0.2.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-05ce6e3682db9009d",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "625272706271",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-public-subnet-2"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-public-subnet-2"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-0bb92c4eb44c251b5"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.networking.aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.networking",
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-1:625272706271:vpc/vpc-0bb92c4eb44c251b5",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-0a2f8f1b5ade4d77b",
+            "default_route_table_id": "rtb-07dfbbc7e162ae161",
+            "default_security_group_id": "sg-097a6a0ae340dd68d",
+            "dhcp_options_id": "dopt-0e5ff7c2dc6a9d36b",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-0bb92c4eb44c251b5",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-07dfbbc7e162ae161",
+            "owner_id": "625272706271",
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-vpc"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-vpc"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::starttech-frontend-production-2026",
+            "bucket": "starttech-frontend-production-2026",
+            "bucket_domain_name": "starttech-frontend-production-2026.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "starttech-frontend-production-2026.s3.us-east-1.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": null,
+            "grant": [
+              {
+                "id": "1113834a150fbd57eddabe43427fb25f547ec3490023ba7a39d47c2ffbf887f1",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3AQBSTGFYJSTF",
+            "id": "starttech-frontend-production-2026",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Effect\":\"Allow\",\"Principal\":\"*\",\"Resource\":\"arn:aws:s3:::starttech-frontend-production-2026/*\",\"Sid\":\"PublicReadGetObject\"}],\"Version\":\"2012-10-17\"}",
+            "region": "us-east-1",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Environment": "production",
+              "Name": "starttech-frontend"
+            },
+            "tags_all": {
+              "Environment": "production",
+              "Name": "starttech-frontend"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [
+              {
+                "error_document": "index.html",
+                "index_document": "index.html",
+                "redirect_all_requests_to": "",
+                "routing_rules": ""
+              }
+            ],
+            "website_domain": "s3-website-us-east-1.amazonaws.com",
+            "website_endpoint": "starttech-frontend-production-2026.s3-website-us-east-1.amazonaws.com"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMCJ9"
+        }
+      ]
+    },
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket_policy",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket": "starttech-frontend-production-2026",
+            "id": "starttech-frontend-production-2026",
+            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Effect\":\"Allow\",\"Principal\":\"*\",\"Resource\":\"arn:aws:s3:::starttech-frontend-production-2026/*\",\"Sid\":\"PublicReadGetObject\"}],\"Version\":\"2012-10-17\"}"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.storage.aws_s3_bucket.frontend",
+            "module.storage.aws_s3_bucket_public_access_block.frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": false,
+            "block_public_policy": false,
+            "bucket": "starttech-frontend-production-2026",
+            "id": "starttech-frontend-production-2026",
+            "ignore_public_acls": false,
+            "restrict_public_buckets": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.storage.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.storage",
+      "mode": "managed",
+      "type": "aws_s3_bucket_website_configuration",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket": "starttech-frontend-production-2026",
+            "error_document": [
+              {
+                "key": "index.html"
+              }
+            ],
+            "expected_bucket_owner": "",
+            "id": "starttech-frontend-production-2026",
+            "index_document": [
+              {
+                "suffix": "index.html"
+              }
+            ],
+            "redirect_all_requests_to": [],
+            "routing_rule": [],
+            "routing_rules": "",
+            "website_domain": "s3-website-us-east-1.amazonaws.com",
+            "website_endpoint": "starttech-frontend-production-2026.s3-website-us-east-1.amazonaws.com"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.storage.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

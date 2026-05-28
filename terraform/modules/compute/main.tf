@@ -171,7 +171,7 @@ resource "aws_launch_template" "backend" {
 
     docker run -d \
       -p 8080:8080 \
-      -e MONGODB_URI="${var.mongodb_uri}" \
+      -e MONGO_URI="${var.mongodb_uri}" \
       -e REDIS_URL="${aws_elasticache_cluster.redis.cache_nodes[0].address}" \
       --restart always \
       --name backend \
