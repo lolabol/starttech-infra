@@ -9,7 +9,7 @@ Redis caching layer.
 
 Internet
     |
-CloudFront (CDN)
+CloudFlare Pages (CDN)
     |
 S3 (Frontend - React)
     |
@@ -27,7 +27,7 @@ Atlas      (Redis)
 ### Frontend
 - React application built with Vite
 - Hosted on S3 as static website
-- Served globally via CloudFront CDN
+- Served globally via CloudFlare Pages CDN
 - Environment specific configurations
 
 ### Backend

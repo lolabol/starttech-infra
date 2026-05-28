@@ -7,7 +7,7 @@ the StartTech application infrastructure.
 ## Common Operations
 
 ### Check Application Health
-curl http://<alb-dns-name>/health
+curl http://starttech-alb-1520060583.us-east-1.elb.amazonaws.com/health
 
 ### Check Pod/Instance Status
 aws autoscaling describe-auto-scaling-groups \
