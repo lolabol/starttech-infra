@@ -172,6 +172,12 @@ resource "aws_launch_template" "backend" {
                 "log_group_name": "/starttech/backend",
                 "log_stream_name": "{instance_id}/user-data",
                 "timezone": "UTC"
+              },
+              {
+                "file_path": "/var/lib/docker/containers/*/*.log",
+                "log_group_name": "/starttech/backend",
+                "log_stream_name": "{instance_id}/docker",
+                "timezone": "UTC"
               }
             ]
           }
