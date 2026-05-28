@@ -157,6 +157,33 @@ resource "aws_launch_template" "backend" {
     systemctl start docker
     systemctl enable docker
 
+# Install CloudWatch agent
+    yum install -y amazon-cloudwatch-agent
+
+# Configure CloudWatch agent
+    cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json << 'CWCONFIG'
+    {
+      "logs": {
+        "logs_collected": {
+          "files": {
+            "collect_list": [
+              {
+                "file_path": "/var/log/user-data.log",
+                "log_group_name": "/starttech/backend",
+                "log_stream_name": "{instance_id}/user-data",
+                "timezone": "UTC"
+              }
+            ]
+          }
+        }
+      }
+    }
+    CWCONFIG
+
+# Start CloudWatch agent
+    systemctl enable amazon-cloudwatch-agent
+    systemctl start amazon-cloudwatch-agent
+
 # Add ec2-user to docker group
     usermod -aG docker ec2-user
 
@@ -171,10 +198,13 @@ resource "aws_launch_template" "backend" {
 
     docker run -d \
       -p 8080:8080 \
-      -e MONGO_URI="${var.mongodb_uri}" \
-      -e REDIS_URL="${aws_elasticache_cluster.redis.cache_nodes[0].address}" \
-      --restart always \
       --name backend \
+      --restart always \
+      -e MONGO_URI="${var.mongodb_uri}" \
+      -e DB_NAME="muchtodo" \
+      -e JWT_SECRET_KEY="${var.jwt_secret_key}" \
+      -e REDIS_ADDR="${aws_elasticache_cluster.redis.cache_nodes[0].address}:6379" \
+      -e ENABLE_CACHE="false" \
       ${aws_ecr_repository.backend.repository_url}:latest
 
   EOF

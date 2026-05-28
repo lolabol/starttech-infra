@@ -47,6 +47,7 @@ jobs:
         env:
           TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}
           TF_VAR_mongodb_uri: ${{ secrets.MONGODB_URI }}
+          TF_VAR_jwt_secret_key: ${{ secrets.JWT_SECRET_KEY }}
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -55,3 +56,4 @@ jobs:
         env:
           TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}
           TF_VAR_mongodb_uri: ${{ secrets.MONGODB_URI }}
+          TF_VAR_jwt_secret_key: ${{ secrets.JWT_SECRET_KEY }}

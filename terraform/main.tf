@@ -43,6 +43,7 @@ module "compute" {
   instance_type     = var.instance_type
   key_pair_name     = var.key_pair_name
   mongodb_uri       = var.mongodb_uri
+  jwt_secret_key    = var.jwt_secret_key
   min_size          = var.min_size
   max_size          = var.max_size
   desired_capacity  = var.desired_capacity

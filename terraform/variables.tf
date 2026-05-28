@@ -76,3 +76,9 @@ variable "desired_capacity" {
 }
 
 
+
+variable "jwt_secret_key" {
+  description = "JWT Secret Key"
+  type        = string
+  sensitive   = true
+}
