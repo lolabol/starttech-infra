@@ -1,5 +1,4 @@
 name: Infrastructure Deploy
-
 on:
   push:
     branches:
@@ -7,16 +6,15 @@ on:
   pull_request:
     branches:
       - main
-
 env:
   AWS_REGION: us-east-1
   TF_VERSION: 1.5.0
-
 jobs:
   terraform:
     name: Terraform Deploy
     runs-on: ubuntu-latest
-
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -42,12 +40,28 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
+        id: plan
         working-directory: terraform
-        run: terraform plan
+        run: terraform plan -no-color 2>&1 | tee plan_output.txt
         env:
           TF_VAR_key_pair_name: ${{ secrets.KEY_PAIR_NAME }}
           TF_VAR_mongodb_uri: ${{ secrets.MONGODB_URI }}
           TF_VAR_jwt_secret_key: ${{ secrets.JWT_SECRET_KEY }}
+
+      - name: Post Plan as PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('terraform/plan_output.txt', 'utf8');
+            const truncated = plan.length > 60000 ? plan.substring(0, 60000) + '\n...(truncated)' : plan;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Terraform Plan Output\n\`\`\`\n${truncated}\n\`\`\``
+            });
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
