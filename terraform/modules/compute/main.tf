@@ -148,18 +148,35 @@ resource "aws_launch_template" "backend" {
 
   user_data = base64encode(<<-EOF
     #!/bin/bash
+    set -e
+    exec > /var/log/user-data.log 2>&1
+
+# Update and install docker
     yum update -y
-    yum install -y docker
+    yum install -y docker aws-cli
     systemctl start docker
     systemctl enable docker
+
+# Add ec2-user to docker group
+    usermod -aG docker ec2-user
+
+# Wait for ECR to be available
+    sleep 30
+
+# Login to ECR
     aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${aws_ecr_repository.backend.repository_url}
-    docker pull ${aws_ecr_repository.backend.repository_url}:latest
+
+# Pull and run the container
+    docker pull ${aws_ecr_repository.backend.repository_url}:latest || true
+
     docker run -d \
       -p 8080:8080 \
-      -e MONGODB_URI=${var.mongodb_uri} \
-      -e REDIS_URL=${aws_elasticache_cluster.redis.cache_nodes[0].address} \
+      -e MONGODB_URI="${var.mongodb_uri}" \
+      -e REDIS_URL="${aws_elasticache_cluster.redis.cache_nodes[0].address}" \
+      --restart always \
       --name backend \
       ${aws_ecr_repository.backend.repository_url}:latest
+
   EOF
   )
 
