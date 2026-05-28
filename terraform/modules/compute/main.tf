@@ -178,7 +178,7 @@ resource "aws_launch_template" "backend" {
         }
       }
     }
-    CWCONFIG
+CWCONFIG
 
 # Start CloudWatch agent
     systemctl enable amazon-cloudwatch-agent
