@@ -13,6 +13,11 @@ automates deployments via GitHub Actions CI/CD pipeline.
 - **Logging**: CloudWatch for infrastructure and application logs
 - **Container Registry**: AWS ECR for Docker images
 
+## CDN Solution: CloudFlare pages (Instead of AWS CloudFront)
+AWS CloudFront was originally the planned CDN solution as specified in the assessment. However, my AWS account was restricted from using CloudFront. At first I raised a support ticket with AWS requesting CloudFront access and waited for days with no response from AWS support. I followed up and attempted live chat support to expedite the request. All my attempts were unsuccessful.
+
+![](https://github.com/lolabol/starttech-infra/blob/main/evidence/CloudFlare.jpg?raw=true)
+
 ## Repository Structure
 starttech-infra/
 ├── .github/
@@ -110,8 +115,8 @@ terraform output
 | Service | URL |
 |---------|-----|
 | Frontend | https://starttech-frontend.pages.dev |
-| Backend API | starttech-alb-1520060583.us-east-1.elb.amazonaws.com |
-| Health Check | starttech-alb-1520060583.us-east-1.elb.amazonaws.com/health |
+| Backend API | http://starttech-alb-1520060583.us-east-1.elb.amazonaws.com |
+| Health Check | http://starttech-alb-1520060583.us-east-1.elb.amazonaws.com/health |
 
 ## CI/CD Pipeline
 
