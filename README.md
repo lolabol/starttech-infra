@@ -6,6 +6,7 @@ full-stack application. It provisions all AWS resources using Terraform and
 automates deployments via GitHub Actions CI/CD pipeline.
 
 ## Architecture
+- **Region: us-east-1
 - **Frontend**: React app hosted on S3, served via CloudFlare Pages
 - **Backend**: Golang API running on EC2 instances behind an ALB
 - **Cache**: ElastiCache Redis cluster for sessions and caching
